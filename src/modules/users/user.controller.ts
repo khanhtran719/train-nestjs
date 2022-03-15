@@ -7,10 +7,15 @@ import {
   Patch,
   // Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { ROLE } from 'src/common/enums/roles.enum';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './interfaces/user.interfaces';
+// import { User } from './interfaces/user.interfaces';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -19,12 +24,25 @@ export class UserController {
 
   @Post('/create')
   async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    const data = await this.userService.createUser(createUserDto);
+    return {
+      data: data,
+      errorCode: 0,
+      message: '',
+      errors: [],
+    };
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Create)
   @Get()
   async getAll(): Promise<any> {
-    return this.userService.getAll();
+    const data = await this.userService.getAll();
+    return {
+      data: data,
+      errorCode: 0,
+      message: '',
+      errors: [],
+    };
   }
 
   @Get('/getById/:id')
