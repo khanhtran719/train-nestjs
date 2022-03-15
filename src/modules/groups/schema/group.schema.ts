@@ -5,7 +5,7 @@ export type GroupDocument = Group & Document;
 
 @Schema()
 export class Group {
-  @Prop()
+  @Prop({ required: true, unique: true })
   name: string;
 
   @Prop()

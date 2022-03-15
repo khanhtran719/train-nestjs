@@ -23,7 +23,7 @@ export class UserController {
   }
 
   @Get()
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<any> {
     return this.userService.getAll();
   }
 

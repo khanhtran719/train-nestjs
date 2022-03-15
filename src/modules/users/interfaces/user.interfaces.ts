@@ -1,7 +1,7 @@
-// import { ObjectID } from 'typeorm';
+import { Types } from 'mongoose';
 
 export interface User {
   username: string;
   password: string;
-  groupId: string;
+  groupId: Types.ObjectId;
 }

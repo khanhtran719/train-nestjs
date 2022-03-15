@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty, IsObject } from 'class-validator';
-// import { ObjectID } from 'typeorm';
+import { Types } from 'mongoose';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -12,5 +12,5 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsObject()
-  groupId: string;
+  groupId: Types.ObjectId;
 }

@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Types } from 'mongoose';
 
 @Entity()
 class User {
@@ -12,6 +13,6 @@ class User {
   public password: string;
 
   @Column()
-  public groupId: string;
+  public groupId: Types.ObjectId;
 }
 export default User;
