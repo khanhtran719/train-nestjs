@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { cleanAccents } from 'src/common/untils/cleanAccents';
+import { cleanAccents } from 'src/common/utils/cleanAccents';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category, CategoryDocument } from './schema/category.schema';
@@ -9,7 +9,7 @@ import { Category, CategoryDocument } from './schema/category.schema';
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,
-  ) { }
+  ) {}
 
   async createCategory(
     createCategoryDto: CreateCategoryDto,
@@ -46,12 +46,7 @@ export class CategoryService {
   async deleteById(id: string): Promise<any> {
     const category = await this.categoryModel.findById(id);
     if (category) {
-      await this.categoryModel.remove(category);
-      return {
-        errorCode: 0,
-        status_code: 200,
-        message: 'Delete success',
-      };
+      return this.categoryModel.remove(category);
     }
     throw new NotFoundException();
   }

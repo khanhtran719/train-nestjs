@@ -9,7 +9,7 @@ import { Group, GroupDocument } from './schema/group.schema';
 export class GroupService {
   constructor(
     @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
-  ) { }
+  ) {}
 
   async createGroup(createGroupDto: CreateGroupDto): Promise<Group> {
     const createGroup = new this.groupModel(createGroupDto);

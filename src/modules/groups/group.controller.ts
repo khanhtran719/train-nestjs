@@ -11,24 +11,28 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { Group } from './interfaces/group.interfaces';
 import { GroupService } from './group.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { responsFormat } from 'src/common/utils/formatRespon';
 
 @Controller('group')
 export class GroupController {
-  constructor(private groupService: GroupService) { }
+  constructor(private groupService: GroupService) {}
 
   @Post('create')
   async createGroup(@Body() createGroupDto: CreateGroupDto) {
-    return this.groupService.createGroup(createGroupDto);
+    const data = await this.groupService.createGroup(createGroupDto);
+    return responsFormat(data);
   }
 
   @Get()
   async getAllGroup(): Promise<Group[]> {
-    return this.groupService.getAllGroup();
+    const data = await this.groupService.getAllGroup();
+    return responsFormat(data);
   }
 
   @Get('/getById/:id')
   async findOneById(@Param('id') id: string) {
-    return this.groupService.findOneById(id);
+    const data = await this.groupService.findOneById(id);
+    return responsFormat(data);
   }
 
   @Patch('/updateById/:id')
@@ -36,7 +40,8 @@ export class GroupController {
     @Param('id') id: string,
     @Body() updateGroupDto: UpdateGroupDto,
   ) {
-    return this.groupService.updateById(id, updateGroupDto);
+    const data = await this.groupService.updateById(id, updateGroupDto);
+    return responsFormat(data);
   }
 
   @Delete('/deleteById/:id')

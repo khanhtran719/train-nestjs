@@ -1,11 +1,11 @@
 import { Types } from 'mongoose';
 
-export interface Bolg {
+export interface Blog {
   image: string;
   imageThumb: string;
   imageAlt: string;
   slug: string;
-  title: Types.ObjectId;
+  title: string;
   description: Types.ObjectId;
   categoryId: Types.ObjectId;
 }

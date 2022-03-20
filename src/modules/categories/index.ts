@@ -14,4 +14,4 @@ import { Category, CategorySchema } from './schema/category.schema';
   ],
   exports: [CategoryService],
 })
-export class CategoryModule { }
+export class CategoryModule {}

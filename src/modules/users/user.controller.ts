@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   Patch,
-  // Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -17,44 +16,63 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { User } from './interfaces/user.interfaces';
 import { UserService } from './user.service';
+import { responsFormat } from 'src/common/utils/formatRespon';
+import { PageNumUserDto } from './dto/pageNum-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Create)
   @Post('/create')
   async createUser(@Body() createUserDto: CreateUserDto) {
     const data = await this.userService.createUser(createUserDto);
-    return {
-      data: data,
-      errorCode: 0,
-      message: '',
-      errors: [],
-    };
-  }
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.Create)
-  @Get()
-  async getAll(): Promise<any> {
-    const data = await this.userService.getAll();
-    return {
-      data: data,
-      errorCode: 0,
-      message: '',
-      errors: [],
-    };
+    return responsFormat(data);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Read)
+  @Get()
+  async getAll() {
+    const data = await this.userService.getAll();
+    return responsFormat(data);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Read)
   @Get('/getById/:id')
   async findOneById(@Param('id') id: string) {
-    return this.userService.findOneById(id);
+    const data = await this.userService.findOneById(id);
+    return responsFormat(data);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Read)
+  @Get('/getUsers/byGroupId/:id')
+  async getUsersByGroupId(@Param('id') id: string) {
+    const data = await this.userService.getUsersByGroupId(id);
+    return responsFormat(data);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Read)
+  @Get('/getUsersByPage')
+  async getUsersByPageNum(@Body() pageNumUserDto: PageNumUserDto) {
+    const data = await this.userService.getUsersByPageNum(pageNumUserDto);
+    return responsFormat(data);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Update)
   @Patch('/updateById/:id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+    const data = await this.userService.update(id, updateUserDto);
+    return responsFormat(data);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ROLE.Delete)
   @Delete('/deleteById/:id')
   async deleteOneById(@Param('id') id: string) {
     return this.userService.deleteOneById(id);

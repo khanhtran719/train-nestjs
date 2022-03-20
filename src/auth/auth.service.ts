@@ -10,22 +10,28 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private groupService: GroupService,
-  ) { }
+  ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findOneByName(username);
     const isMatch = await bcrypt.compare(password, user.password);
     if (user && isMatch) {
-      const group = await this.groupService.findOneById(user.groupId);
+      const group = await this.groupService.findOneById(
+        user.groupId.toString(),
+      );
       const { username } = user;
-      const { permission } = group;
-      return { username, permission };
+      const { permission, name } = group;
+      return { username, name, permission };
     }
     return null;
   }
 
   async login(user: any) {
-    const payload = { username: user.username, permission: user.permission };
+    const payload = {
+      username: user.username,
+      groupName: user.name,
+      permission: user.permission,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

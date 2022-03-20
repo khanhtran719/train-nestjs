@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { responsFormat } from 'src/common/utils/formatRespon';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -14,16 +15,18 @@ import { Category } from './interfaces/category.interfaces';
 
 @Controller('category')
 export class CategoryController {
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService) {}
 
   @Post('create')
   async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.createCategory(createCategoryDto);
+    const data = await this.categoryService.createCategory(createCategoryDto);
+    return responsFormat(data);
   }
 
   @Get()
   async getAllCategory(): Promise<Category[]> {
-    return this.categoryService.getAllCategory();
+    const data = await this.categoryService.getAllCategory();
+    return responsFormat(data);
   }
 
   @Patch('/updateById/:id')
@@ -31,7 +34,8 @@ export class CategoryController {
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.categoryService.updateById(id, updateCategoryDto);
+    const data = await this.categoryService.updateById(id, updateCategoryDto);
+    return responsFormat(data);
   }
 
   @Delete('/deleteById/:id')

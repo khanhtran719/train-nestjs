@@ -9,7 +9,7 @@ export class Group {
   name: string;
 
   @Prop()
-  permission: string;
+  permission: [];
 }
 
 export const GroupSchema = SchemaFactory.createForClass(Group);

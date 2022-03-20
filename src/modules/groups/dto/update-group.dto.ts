@@ -6,5 +6,5 @@ export class UpdateGroupDto {
   name: string;
 
   @IsNotEmpty()
-  permission: string;
+  permission: [];
 }

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types, Document } from 'mongoose';
 import { Category } from 'src/modules/categories/schema/category.schema';
-import { MutipleLanguages } from 'src/modules/mutipleLanguages/schema/mutipleLanguages.schema';
+import { MutipleLanguages } from 'src/modules/mutiple_lang/schema/mutiple_lang.schema';
 
 export type BlogDocument = Blog & Document;
 const { ObjectId } = Types;

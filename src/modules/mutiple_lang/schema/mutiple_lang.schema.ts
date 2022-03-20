@@ -5,11 +5,12 @@ export type MutipleLanguagesDocument = MutipleLanguages & Document;
 
 @Schema()
 export class MutipleLanguages {
-  @Prop({ unique: true })
+  @Prop({ required: true })
   lang: string;
 
-  @Prop({ required: true })
+  @Prop()
   content: string;
 }
 
-export const MutipleLanguagesSchema = SchemaFactory.createForClass(MutipleLanguages);
+export const MutipleLanguagesSchema =
+  SchemaFactory.createForClass(MutipleLanguages);

@@ -6,5 +6,5 @@ export class CreateGroupDto {
   name: string;
 
   @IsNotEmpty()
-  permission: string;
+  permission: [];
 }
