@@ -1,6 +1,10 @@
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -11,9 +15,15 @@ import { user } from './interfaces/user.interfaces';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
-  async createUser(createUserDto: CreateUserDto): Promise<user> {
+  async createUser(createUserDto: CreateUserDto): Promise<any> {
+    const checkUser = await this.userModel.findOne({
+      username: createUserDto.username,
+    });
+    if (checkUser) {
+      throw new BadRequestException();
+    }
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.groupId = await new Types.ObjectId(createUserDto.groupId);
     const createUser = new this.userModel(createUserDto);
@@ -47,6 +57,10 @@ export class UserService {
 
   async findOneByName(username: string): Promise<User> {
     return await this.userModel.findOne({ username });
+  }
+
+  async findOneByGroupId(id: string): Promise<any> {
+    return await this.userModel.findOne({ groupId: id });
   }
 
   async getUsersByGroupId(id: string): Promise<user[]> {

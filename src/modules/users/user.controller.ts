@@ -14,7 +14,6 @@ import { ROLE } from 'src/common/enums/roles.enum';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { User } from './interfaces/user.interfaces';
 import { UserService } from './user.service';
 import { responsFormat } from 'src/common/utils/formatRespon';
 import { PageNumUserDto } from './dto/pageNum-user.dto';
