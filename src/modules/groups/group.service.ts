@@ -18,21 +18,24 @@ export class GroupService {
   ) {}
 
   async createGroup(createGroupDto: CreateGroupDto): Promise<Group> {
-    const group = await this.groupModel.findOne({ name: createGroupDto.name });
-    if (group) {
-      throw new BadRequestException();
-    }
     const createGroup = new this.groupModel(createGroupDto);
     createGroup.save();
     return createGroup;
   }
 
   async getAllGroup(): Promise<Group[]> {
-    return this.groupModel.find().exec();
+    return this.groupModel
+      .find()
+      .select('_id name permission')
+      .sort({ name: 1 })
+      .exec();
   }
 
   async findOneById(id: string): Promise<Group> {
-    const group = await this.groupModel.findById(id);
+    const group = await this.groupModel
+      .findById(id)
+      .select('_id name permission')
+      .exec();
     if (group) {
       return group;
     }
@@ -43,7 +46,10 @@ export class GroupService {
     const group = await this.groupModel.findById(id);
     if (group) {
       await this.groupModel.findByIdAndUpdate(id, updateGroupDto);
-      return await this.groupModel.findById(id);
+      return await this.groupModel
+        .findById(id)
+        .select('_id name permission')
+        .exec();
     }
     throw new NotFoundException();
   }

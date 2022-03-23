@@ -3,55 +3,53 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { ROLE } from 'src/common/enums/roles.enum';
-import { RolesGuard } from 'src/common/guards/roles.guard';
 import { responsFormat } from 'src/common/utils/formatRespon';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from './interfaces/category.interfaces';
 
 @Controller('category')
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.Action)
+  @Roles(ROLE.Create)
   @Post('create')
+  @HttpCode(201)
   async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     const data = await this.categoryService.createCategory(createCategoryDto);
-    return responsFormat(data);
+    return responsFormat(data, 0, 'Success', []);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.Action)
+  @Public()
   @Get()
-  async getAllCategory(): Promise<Category[]> {
+  @HttpCode(200)
+  async getAllCategory() {
     const data = await this.categoryService.getAllCategory();
-    return responsFormat(data);
+    return responsFormat(data, 0, 'Success', []);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.Action)
+  @Roles(ROLE.Update)
   @Patch('/updateById/:id')
+  @HttpCode(200)
   async updateById(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     const data = await this.categoryService.updateById(id, updateCategoryDto);
-    return responsFormat(data);
+    return responsFormat(data, 0, 'Success', []);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(ROLE.Action)
+  @Roles(ROLE.Delete)
   @Delete('/deleteById/:id')
+  @HttpCode(200)
   async deleteById(@Param('id') id: string) {
     return this.categoryService.deleteById(id);
   }

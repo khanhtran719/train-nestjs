@@ -14,6 +14,9 @@ export class AuthService {
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.userService.findOneByName(username);
+    if (!user) {
+      throw new NotFoundException();
+    }
     const isMatch = await bcrypt.compare(password, user.password);
     if (user && isMatch) {
       const group = await this.groupService.findOneById(

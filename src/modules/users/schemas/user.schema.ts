@@ -7,13 +7,13 @@ const { ObjectId } = Types;
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ unique: true, required: true })
   username: string;
 
-  @Prop()
+  @Prop({ minlength: 6 })
   password: string;
 
-  @Prop({ type: ObjectId, required: true, ref: Group.name })
+  @Prop({ type: ObjectId, ref: Group.name })
   groupId: Types.ObjectId;
 }
 

@@ -1,19 +1,13 @@
-export const responsFormat = (data: any): any => {
-  if (data) {
-    return {
-      data: data,
-      errorCode: 0,
-      message: '',
-      errors: [],
-    };
-  }
-};
-
-export const deleteSuccess = () => {
+export const responsFormat = (
+  data: any,
+  error: number,
+  message: string,
+  errors: [],
+): any => {
   return {
-    status_code: 200,
-    errorCode: 0,
-    message: 'Delete Successfully',
-    errors: [],
+    data: data,
+    errorCode: error,
+    message: message,
+    errors: errors,
   };
 };

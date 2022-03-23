@@ -26,7 +26,11 @@ export class MutipleLanguagesService {
   }
 
   async getAll(): Promise<MutipleLanguages[]> {
-    return this.mutipleLanguagesModule.find().exec();
+    return this.mutipleLanguagesModule
+      .find()
+      .select('_id lang content')
+      .sort({ lang: 1 })
+      .exec();
   }
 
   async updateById(
@@ -39,7 +43,10 @@ export class MutipleLanguagesService {
         id,
         updateMutipleLanguagesDto,
       );
-      return await this.mutipleLanguagesModule.findById(id);
+      return await this.mutipleLanguagesModule
+        .findById(id)
+        .select('_id lang content')
+        .exec();
     }
     throw new NotFoundException();
   }

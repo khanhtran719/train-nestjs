@@ -5,6 +5,7 @@ import { cleanAccents } from 'src/common/utils/cleanAccents';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category, CategoryDocument } from './schema/category.schema';
+
 @Injectable()
 export class CategoryService {
   constructor(
